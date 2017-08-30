@@ -1,146 +1,58 @@
-# Reactive Forms
+# Реактивные формы The Angular
 
-_Reactive forms_ is an Angular technique for creating forms in a _reactive_ style.
-This guide explains reactive forms as you follow the steps to build a "Hero Detail Editor" form.
+## Введение в реактивные формы
 
+Angular предлагает две технологии для создания форм: _реактивные формы_ and _шаблонные формы_.
+Эти технологии принадлежат библиотеке `@angular/forms` и имеют общий набор классов управления формами, но они заметно различаются в философии, 
+стиле программирования и технике. 
 
-{@a toc}
+### _Реактивные формы_ 
+_Реактивные_ формы Angular продвигают реактивный стиль программирования, который способствует явному управлению данными, проходящими между моделью 
+данных и моделью, ориентированной на пользовательский интерфейс, которая сохраняет состояния и значения элементов управления HTML на экране. 
+_Реактивные_ формы обеспечивают простоту использования реактивных шаблонов, тестирования и валидации. 
+С _реактивными_ формами создается дерево объектов управления Angular формой в классе компонентов и привязываете их к элементам управления собственной 
+формой в шаблоне компонента. 
+Объекты управления формой создаются непосредственно в классе компонентов. Поскольку класс компонента имеет непосредственный доступ как к модели данных, 
+так и к структуре управления формами,  можно вывести значения модели данных в элементы формы и вытащить измененные пользователем значения. 
+Компонент может наблюдать изменения и реагировать на эти изменения.
+Одно из преимуществ непосредственной работы с объектами управления формой заключается в том, что обновления значения и валидности всегда синхронны. 
+Не возникает проблем синхронизации, которые иногда появляются при использовании шаблонных форм. Также реактивные формы проще для модульного тестирования.
+В соответствии с реактивной парадигмой компонент сохраняет неизменность модели данных, рассматривая ее как достоверный источник исходных значений. 
+Вместо того, чтобы напрямую обновлять модель данных, компонент извлекает изменения пользователя и перенаправляет их на внешний компонент или сервис, 
+который делает что-то с ними (например, сохранение) и возвращает новую модель данных компоненту, который отражает обновленное состояние модели.
+Использование реактивных форм не требует соблюдения всех реактивных принципов, но это облегчает подход к реактивному программированию.
 
-Try the <live-example plnkr="final" title="Reactive Forms (final) in Plunker">Reactive Forms live-example</live-example>.
+### _Шаблонные формы_
 
-You can also run the <live-example title="Reactive Forms Demo in Plunker">Reactive Forms Demo</live-example> version
-and choose one of the intermediate steps from the "demo picker" at the top.
-
-
-{@a intro}
-
-
-## Introduction to Reactive Forms
-
-Angular offers two form-building technologies: _reactive_ forms and _template-driven_ forms.
-The two technologies belong to the `@angular/forms` library
-and share a common set of form control classes.
-
-But they diverge markedly in philosophy, programming style, and technique.
-They even have their own modules: the `ReactiveFormsModule` and the `FormsModule`.
-
-### _Reactive_ forms
-Angular _reactive_ forms facilitate a _reactive style_ of programming
-that favors explicit management of the data flowing between
-a non-UI _data model_ (typically retrieved from a server) and a
-UI-oriented _form model_ that retains the states
-and values of the HTML controls on screen. Reactive forms offer the ease
-of using reactive patterns, testing, and validation.
-
-With _reactive_ forms, you create a tree of Angular form control objects
-in the component class and bind them to native form control elements in the
-component template, using techniques described in this guide.
-
-You create and manipulate form control objects directly in the
-component class. As the component class has immediate access to both the data
-model and the form control structure, you can push data model values into
-the form controls and pull user-changed values back out. The component can
-observe changes in form control state and react to those changes.
-
-One advantage of working with form control objects directly is that value and validity updates
-are [always synchronous and under your control](guide/reactive-forms#async-vs-sync "Async vs sync").
-You won't encounter the timing issues that sometimes plague a template-driven form
-and reactive forms can be easier to unit test.
-
-In keeping with the reactive paradigm, the component
-preserves the immutability of the _data model_,
-treating it as a pure source of original values.
-Rather than update the data model directly,
-the component extracts user changes and forwards them to an external component or service,
-which does something with them (such as saving them)
-and returns a new _data model_ to the component that reflects the updated model state.
-
-Using reactive form directives does not require you to follow all reactive priniciples,
-but it does facilitate the reactive programming approach should you choose to use it.
-
-### _Template-driven_ forms
-
-_Template-driven_ forms, introduced in the [Template guide](guide/forms), take a completely different approach.
-
-You place HTML form controls (such as `<input>` and `<select>`) in the component template and
-bind them to _data model_ properties in the component, using directives
-like `ngModel`.
-
-You don't create Angular form control objects. Angular directives
-create them for you, using the information in your data bindings.
-You don't push and pull data values. Angular handles that for you with `ngModel`.
-Angular updates the mutable _data model_ with user changes as they happen.
-
-For this reason, the `ngModel` directive is not part of the ReactiveFormsModule.
-
-While this means less code in the component class,
-[template-driven forms are asynchronous](guide/reactive-forms#async-vs-sync "Async vs sync")
-which may complicate development in more advanced scenarios.
-
-
-{@a async-vs-sync}
+Элементы формы HTML размещаются (например, `<input>` и `<select>`) в шаблоне компонента и привязываете их к свойствам модели данных в компоненте, 
+используя директивы, к примеру `ngModel`.
+Не нужно создавать объекты управления Angular формой. Директивы Angular создают их, используя информацию в данных, при необходимости Angular обновляет 
+измененную модель данных  с изменениями пользователя.
+Именно по этой причине директива ngModel не является частью ReactiveFormsModule - это означает, что в классе компонента меньше кода. 
+Шаблонные формы являются асинхронными, что может усложнить разработку в более сложных сценариях.
 
 
 ### Async vs. sync
 
-Reactive forms are synchronous. Template-driven forms are asynchronous. It's a difference that matters.
+Реактивные формы синхронны, а шаблонные - нет. Это имеет большое значение.
+В реактивных формах создается все дерево управления формой в коде. Можно сразу обновить значение или развернуть потомков родительской формы, потому что
+ все элементы управления всегда доступны.
+Шаблонные формы поручают создание своих элементов  директивам. Чтобы избежать ошибок «changed after checked», эти директивы проходят более одного цикла 
+для построения всего дерева управления. Другими словами, необходимо подождать, перед тем как манипулировать любыми элементами управления из класса компонента.
+К примеру, если вводить элемент формы с помощью запроса `@ViewChild (NgForm)` и проверить его в hook-кэше `ngAfterViewInit`, обнаружится, что у него нет детей. 
+Необходимо использовать `setTimeout`, перед извлечением значения из элемента управления, проверки валидности или изменением значения.
+К тому же, асинхронность шаблонных форм усложняет модульное тестирование. Необходимо обернуть свой тестовый блок в `async ()` или `fakeAsync ()`, чтобы 
+избежать поиска значений в форме, которая еще не существует, а в реактивных формах всегда все доступно.
 
-In reactive forms, you create the entire form control tree in code.
-You can immediately update a value or drill down through the descendents of the parent form
-because all controls are always available.
+### Что лучше: Реактивные или Шаблонные формы?
 
-Template-driven forms delegate creation of their form controls to directives.
-To avoid "_changed after checked_" errors,
-these directives take more than one cycle to build the entire control tree.
-That means you must wait a tick before manipulating any of the controls
-from within the component class.
+Невозможно определить, что лучше использовать. Это две разные архитектурные парадигмы, с их сильными и слабыми сторонами. 
+Можно использовать и реактивные, и шаблонные в одном приложении.
+В данном руководстве в дальнейшем речь будет идти только о реактивных формах.
 
-For example, if you inject the form control with a `@ViewChild(NgForm)` query and examine it in the
-[`ngAfterViewInit` lifecycle hook](guide/lifecycle-hooks#afterview "Lifecycle hooks guide: AfterView"),
-you'll discover that it has no children.
-You must wait a tick, using `setTimeout`, before you can
-extract a value from a control, test its validity, or set it to a new value.
-
-The asynchrony of template-driven forms also complicates unit testing.
-You must wrap your test block in `async()` or `fakeAsync()` to
-avoid looking for values in the form that aren't there yet.
-With reactive forms, everything is available when you expect it to be.
-
-### Which is better, reactive or template-driven?
-
-Neither is "better".
-They're two different architectural paradigms,
-with their own strengths and weaknesses.
-Choose the approach that works best for you.
-You may decide to use both in the same application.
-
-The balance of this _reactive forms_ guide explores the _reactive_ paradigm and
-concentrates exclusively on reactive forms techniques.
-For information on _template-driven forms_, see the [_Forms_](guide/forms) guide.
-
-In the next section, you'll set up your project for the reactive form demo.
-Then you'll learn about the [Angular form classes](guide/reactive-forms#essentials) and how to use them in a reactive form.
-
-
-
-{@a setup}
-
-
-## Setup
-
-Follow the steps in the [_Setup_ guide](guide/setup "Setup guide")
-for creating a new project folder (perhaps called `reactive-forms`)
-based on the _QuickStart seed_.
-
-
-
-{@a data-model}
-
-
-## Create a data model
-The focus of this guide is a reactive forms component that edits a hero.
-You'll need a `hero` class and some hero data.
-Create a new `data-model.ts` file in the `app` directory and copy the content below into it.
+## Создание модели данных
+Главная часть этого руководства - компонент реактивных форм, который редактирует героя.  
+Понадобится класс героя и некоторые данные героя. Создается новый файл `data-model.ts` в каталоге приложения.
 
 
 <code-example path="reactive-forms/src/app/data-model.ts" title="src/app/data-model.ts" linenums="false">
@@ -148,19 +60,10 @@ Create a new `data-model.ts` file in the `app` directory and copy the content be
 </code-example>
 
 
+Файл экспортирует два класса и две константы. Классы `Address` и `Hero` определяют модель данных приложения.
 
-The file exports two classes and two constants. The `Address`
-and `Hero` classes define the application _data model_.
-The `heroes` and `states` constants supply the test data.
-
-
-
-{@a create-component}
-
-
-## Create a _reactive forms_ component
-Make a new file called
-`hero-detail.component.ts` in the `app` directory and import these symbols:
+## Создание компонента реактивных форм
+Создается новый файл с именем hero-detail.component.ts в каталоге приложения и производится импорт:
 
 
 <code-example path="reactive-forms/src/app/hero-detail-1.component.ts" region="imports" title="src/app/hero-detail.component.ts" linenums="false">
@@ -169,7 +72,7 @@ Make a new file called
 
 
 
-Now enter the `@Component` decorator that specifies the `HeroDetailComponent` metadata:
+Теперь вводится декоратор @Component, который указывает метаданные `HeroDetailComponent`:
 
 
 <code-example path="reactive-forms/src/app/hero-detail.component.ts" region="metadata" title="src/app/hero-detail.component.ts (excerpt)" linenums="false">
@@ -177,10 +80,8 @@ Now enter the `@Component` decorator that specifies the `HeroDetailComponent` me
 </code-example>
 
 
-
-Next, create an exported `HeroDetailComponent` class with a `FormControl`.
-`FormControl` is a directive that allows you to create and manage
-a `FormControl` instance directly.
+Затем создается экспортированный класс HeroDetailComponent с помощью `FormControl`. 
+`FormControl` - это директива, которая позволяет напрямую создавать и управлять экземпляром FormControl.
 
 
 
@@ -190,35 +91,12 @@ a `FormControl` instance directly.
 
 
 
-Here you are creating a `FormControl` called `name`.
-It will be bound in the template to an HTML `input` box for the hero name.
+Здесь создается name экземпляра FormControl. Он будет связан в шаблоне с полем ввода HTML для имени героя. 
+Конструктор FormControl принимает три необязательных аргумента: начальное значение, массив валидаторов и массив асинхронных валидаторов.
 
-A `FormControl` constructor accepts three, optional arguments:
-the initial data value, an array of validators, and an array of async validators.
+## Создание шаблона
 
-This simple control doesn't have data or validators.
-In real apps, most form controls have both.
-
-
-<div class="l-sub-section">
-
-
-
-This guide touches only briefly on `Validators`. For an in-depth look at them,
-read the [Form Validation](guide/form-validation) guide.
-
-
-</div>
-
-
-
-
-{@a create-template}
-
-
-## Create the template
-
-Now create the component's template, `src/app/hero-detail.component.html`, with the following markup.
+Теперь создается шаблон компонента `src/app/hero-detail.compionent.html` со следующей разметкой:
 
 
 <code-example path="reactive-forms/src/app/hero-detail-1.component.html" region="simple-control" title="src/app/hero-detail.component.html" linenums="false">
@@ -227,41 +105,17 @@ Now create the component's template, `src/app/hero-detail.component.html`, with 
 
 
 
-To let Angular know that this is the input that you want to
-associate to the `name` `FormControl` in the class,
-you need `[formControl]="name"` in the template on the `<input>`.
+Чтобы Angular знал, что это вход, который необходимо связать name c `FormControl` в классе, нужно прописать `[formControl]` = «name» в шаблоне на `<input>`.
 
 
+## Импорт _ReactiveFormsModule_
 
-<div class="l-sub-section">
+Шаблон `HeroDetailComponent` использует директиву `formControlName` из `ReactiveFormsModule`.
+В этом примере необходимо объявить HeroDetailComponent в AppModule, поэтому в `app.module.ts` необходимо выполнить следующие три действия:
 
-
-
-Disregard the `form-control` _CSS_ class. It belongs to the
-<a href="http://getbootstrap.com/" title="Bootstrap CSS">Bootstrap CSS library</a>,
-not Angular.
-It _styles_ the form but in no way impacts the logic of the form.
-
-
-</div>
-
-
-
-{@a import}
-
-
-## Import the _ReactiveFormsModule_
-
-The HeroDetailComponent template uses `formControlName`
-directive from the `ReactiveFormsModule`.
-
-In this sample, you declare the `HeroDetailComponent` in the `AppModule`.
-Therefore, do the following three things in `app.module.ts`:
-
-1. Use a JavaScript `import` statement to access
-the `ReactiveFormsModule` and the `HeroDetailComponent`.
-1. Add `ReactiveFormsModule` to the `AppModule`'s `imports` list.
-1. Add `HeroDetailComponent` to the declarations array.
+1. Использовать оператор import для доступа к `ReactiveFormsModule` и `HeroDetailComponent`.
+1. Добавить `ReactiveFormsModule` в список импорта `AppModule`.
+1. Добавить `HeroDetailComponent` в массив объявлений.
 
 
 <code-example path="reactive-forms/src/app/app.module.ts" region="v1" title="src/app/app.module.ts (excerpt)" linenums="false">
@@ -270,49 +124,35 @@ the `ReactiveFormsModule` and the `HeroDetailComponent`.
 
 
 
-{@a update}
 
-
-
-## Display the _HeroDetailComponent_
-Revise the `AppComponent` template so it displays the `HeroDetailComponent`.
+## Отображение элемента _HeroDetailComponent_
+Необходимо переработать шаблон `AppComponent`, так, чтобы он отобразил `HeroDetailComponent`.
 
 <code-example path="reactive-forms/src/app/app.component.1.ts" title="src/app/app.component.ts" linenums="false">
 
 </code-example>
 
+### Основные классы форм
+
+* _AbstractControl_ - абстрактный базовый класс для трех конкретных классов управления формой: `FormControl`, `FormGroup` и `FormArray`.
+ Он обеспечивает их общее поведение и свойства.
 
 
-{@a essentials}
+* _FormControl_
+отслеживает значение и валидность элемента управления отдельной формы. Он соответствует формату HTML-формы, например, input box или selector.
 
+* _FormGroup_
+отслеживает значение и валидность группы экземпляров `AbstractControl`. К свойствам группы относятся ее дочерние элементы. 
+Форма верхнего уровня в компоненте - `FormGroup`.
 
-### Essential form classes
-It may be helpful to read a brief description of the core form classes.
-
-* [_AbstractControl_](api/forms/AbstractControl "API Reference: AbstractControl")
-is the abstract base class for the three concrete form control classes:
-`FormControl`, `FormGroup`, and `FormArray`.
-It provides their common behaviors and properties, some of which are _observable_.
-
-* [_FormControl_](api/forms/FormControl "API Reference: FormControl")
-tracks the value and validity status of an _individual_ form control.
-It corresponds to an HTML form control such as an input box or selector.
-
-* [_FormGroup_](api/forms/FormGroup "API Reference: FormGroup")
-tracks the value and validity state of a _group_ of `AbstractControl` instances.
-The group's properties include its child controls.
-The top-level form in your component is a `FormGroup`.
-
-* [_FormArray_](api/forms/FormArray "API Reference: FormArray")
-tracks the value and validity state of a numerically indexed _array_ of `AbstractControl` instances.
-
-You'll learn more about these classes as you work through this guide.
+* _FormArray_
+отслеживает значение и валидность массива с числовым индексом экземпляров `AbstractControl`.
 
 
 
-### Style the app
-You used bootstrap CSS classes in the template HTML of both the `AppComponent` and the `HeroDetailComponent`.
-Add the `bootstrap` _CSS stylesheet_ to the head of `index.html`:
+### Стилизация приложения
+Добавление таблицу стилей загрузки `bootstrap` в head `index.html`:
+
 
 
 <code-example path="reactive-forms/src/index.html" region="bootstrap" title="index.html" linenums="false">
@@ -321,7 +161,7 @@ Add the `bootstrap` _CSS stylesheet_ to the head of `index.html`:
 
 
 
-Now that everything is wired up, the browser should display something like this:
+Теперь, когда все подключено, браузер должен отобразить что-то вроде этого:
 
 
 <figure>
@@ -333,11 +173,9 @@ Now that everything is wired up, the browser should display something like this:
 {@a formgroup}
 
 
-## Add a FormGroup
-Usually, if you have multiple *FormControls*, you'll want to register
-them within a parent `FormGroup`.
-This is simple to do. To add a `FormGroup`, add it to the imports section
-of `hero-detail.component.ts`:
+## Добавление FormGroup
+Если же имеется несколько `FormControls`, будет удобно зарегистрировать их в родительском `FormGroup`, и делается это достаточно просто:
+
 
 
 <code-example path="reactive-forms/src/app/hero-detail-2.component.ts" region="imports" title="src/app/hero-detail.component.ts" linenums="false">
@@ -346,7 +184,7 @@ of `hero-detail.component.ts`:
 
 
 
-In the class, wrap the `FormControl` in a `FormGroup` called `heroForm` as follows:
+В классе необходимо обернуть `FormControl` в `FormGroup` с именем heroForm следующим образом:
 
 
 <code-example path="reactive-forms/src/app/hero-detail-2.component.ts" region="v2" title="src/app/hero-detail.component.ts" linenums="false">
@@ -355,8 +193,8 @@ In the class, wrap the `FormControl` in a `FormGroup` called `heroForm` as follo
 
 
 
-Now that you've made changes in the class, they need to be reflected in the
-template. Update `hero-detail.component.html` by replacing it with the following.
+Теперь, когда изменения внесены в класс, они должны быть отражены в шаблоне. Обновленный файл `hero-detail.component.html`:
+
 
 
 <code-example path="reactive-forms/src/app/hero-detail-2.component.html" region="basic-form" title="src/app/hero-detail.component.html" linenums="false">
@@ -365,98 +203,37 @@ template. Update `hero-detail.component.html` by replacing it with the following
 
 
 
-Notice that now the single input is in a `form` element. The `novalidate`
-attribute in the `<form>` element prevents the browser
-from attempting native HTML validations.
+Необходимо обратить внимание, что один `input` находится в элементе формы. Атрибут novalidate в элементе `<form>` не позволяет браузеру выполнять собственные 
+валидации HTML.
+`FormGroup` - это директива реактивной формы, которая принимает существующий экземпляр `FormGroup` и связывает его с элементом HTML. В данном случае он 
+связывает FormGroup, которая сохранена как `heroForm` с элементом формы.
+Поскольку у класса теперь есть FormGroup, нужно обновить синтаксис шаблона для связывания ввода с соответствующим `FormControl` в классе компонента.
+Без родительской `FormGroup`, `[formControl]` = "name" раньше работал, потому что эта директива может стоять одна, то есть работает без участия в `FormGroup`. 
+Для родительской `FormGroup` для ввода name требуется прописать `formControlName = name`, чтобы связать с правильным `FormControl` в классе. 
+Это выражение говорит Angular, чтобы он сначала искал родительскую FormGroup, в данном случае heroForm, а затем внутри этой группы искать `FormControl` с 
+именем name.
+Значение переходит в модель формы, которое возвращает `FormControl`. Чтобы увидеть модель формы, добавляется следующая строка после закрывающего тега `form`
+ в файле `hero-detail.component.html`:
+ 
+ <code-example path="reactive-forms/src/app/hero-detail-3.component.html" region="form-value-json" title="src/app/hero-detail.component.html" linenums="false">
+ 
+ </code-example>
 
-`formGroup` is a reactive form directive that takes an existing
-`FormGroup` instance and associates it with an HTML element.
-In this case, it associates the `FormGroup` you saved as
-`heroForm` with the form element.
-
-Because the class now has a `FormGroup`, you must update the template
-syntax for associating the input with the corresponding
-`FormControl` in the component class.
-Without a parent `FormGroup`,
-`[formControl]="name"` worked earlier because that directive
-can stand alone, that is, it works without being in a `FormGroup`.
-With a parent `FormGroup`, the `name` input needs the syntax
-`formControlName=name` in order to be associated
-with the correct `FormControl`
-in the class. This syntax tells Angular to look for the parent
-`FormGroup`, in this case `heroForm`, and then _inside_ that group
-to look for a `FormControl` called `name`.
-
-
-<div class="l-sub-section">
-
-
-
-Disregard the `form-group` _CSS_ class. It belongs to the
-<a href="http://getbootstrap.com/" title="Bootstrap CSS">Bootstrap CSS library</a>,
-not Angular.
-Like the `form-control` class, it _styles_ the form
-but in no way impacts its logic.
-
-
-
-</div>
-
-
-
-The form looks great. But does it work?
-When the user enters a name, where does the value go?
-
-
-{@a json}
-
-
-## Taking a look at the form model
-
-The value goes into the **_form model_** that backs the group's `FormControls`.
-To see the form model, add the following line after the
-closing `form` tag in the `hero-detail.component.html`:
-
-
-<code-example path="reactive-forms/src/app/hero-detail-3.component.html" region="form-value-json" title="src/app/hero-detail.component.html" linenums="false">
-
-</code-example>
-
-
-
-The `heroForm.value` returns the _form model_.
-Piping it through the `JsonPipe` renders the model as JSON in the browser:
+Функция heroForm.value возвращает модель формы. Piping через JsonPipe отображает модель как JSON в браузере:
 
 
 <figure>
   <img src="generated/images/guide/reactive-forms/json-output.png" alt="JSON output">
 </figure>
 
+Исходным значением name является пустая строка. 
 
 
-The initial `name` property value is the empty string.
-Type into the _name_ input box and watch the keystokes appear in the JSON.
+## Введение в _FormBuilder_
 
+Класс `FormBuilder` помогает сделать код чище(без повторений и беспорядка). 
+Чтобы использовать `FormBuilder`, нужно импортировать его в файл `hero-detail.component.ts`:
 
-
-
-Great! You have the basics of a form.
-
-In real life apps, forms get big fast.
-`FormBuilder` makes form development and maintenance easier.
-
-
-
-
-{@a formbuilder}
-
-
-## Introduction to _FormBuilder_
-
-The `FormBuilder` class helps reduce repetition and
-clutter by handling details of control creation for you.
-
-To use `FormBuilder`, you need to import it into `hero-detail.component.ts`:
 
 <code-example path="reactive-forms/src/app/hero-detail-3a.component.ts" region="imports" title="src/app/hero-detail.component.ts (excerpt)" linenums="false">
 
@@ -464,15 +241,15 @@ To use `FormBuilder`, you need to import it into `hero-detail.component.ts`:
 
 
 
-Use it now to refactor the `HeroDetailComponent` into something that's a little easier to read and write,
-by following this plan:
+Используя `FormBuilder`, можно преобразовать `HeroDetailComponent` во что-то, что немного легче читать и писать, если следовать следующему плану:
 
-* Explicitly declare the type of the `heroForm` property to be `FormGroup`; you'll initialize it later.
-* Inject a `FormBuilder` into the constructor.
-* Add a new method that uses the `FormBuilder` to define the `heroForm`; call it `createForm`.
-* Call `createForm` in the constructor.
 
-The revised `HeroDetailComponent` looks like this:
+* Явно объявить тип свойства `heroForm` как `FormGroup`
+* Внести `FormBuilder` в конструктор
+* Добавить новый метод, который использует `FormBuilder` для определения `heroForm`
+* Вызвать `createForm` в конструкторе
+
+Получившийся `HeroDetailComponent` должен выглядеть следующим образом:
 
 <code-example path="reactive-forms/src/app/hero-detail-3a.component.ts" region="v3a" title="src/app/hero-detail.component.ts (excerpt)" linenums="false">
 
@@ -480,22 +257,22 @@ The revised `HeroDetailComponent` looks like this:
 
 
 
-`FormBuilder.group` is a factory method that creates a `FormGroup`. &nbsp;
-`FormBuilder.group` takes an object whose keys and values are `FormControl` names and their definitions.
-In this example, the `name` control is defined by its initial data value, an empty string.
+`FormBuilder.group` - это фабричный метод, который создает `FormGroup`. `FormBuilder.group` принимает объект, ключи и значения которого являются именами
+ `FormControl` и их определениями. В данном примере управление name определяется его начальным значением данных,  сейчас - пустой строкой.
 
-Defining a group of controls in a single object makes for a compact, readable style.
-It beats writing an equivalent series of `new FormControl(...)` statements.
+
+Определение группы элементов управления в одном объекте создает компактный, читаемый код. 
+
 
 
 {@a validators}
 
 
 ### Validators.required
-Though this guide doesn't go deeply into validations, here is one example that
-demonstrates the simplicity of using `Validators.required` in reactive forms.
+Данный гайд не углубляется в валидацию, но вот один пример, демонстрирующий простоту использования `Validators.required` в реактивных формах. 
 
-First, import the `Validators` symbol.
+
+Для начала импортируется Validators
 
 <code-example path="reactive-forms/src/app/hero-detail-3.component.ts" region="imports" title="src/app/hero-detail.component.ts (excerpt)" linenums="false">
 
@@ -503,30 +280,13 @@ First, import the `Validators` symbol.
 
 
 
-To make the `name` `FormControl` required, replace the `name`
-property in the `FormGroup` with an array.
-The first item is the initial value for `name`;
-the second is the required validator, `Validators.required`.
+Чтобы сделать поле `name` `required`,  заменяется свойство name в `FormGroup` на массив. Первый элемент - это начальное значение name; Второй - обязательный валидатор, `Validators.required`.
+
 
 
 <code-example path="reactive-forms/src/app/hero-detail-3.component.ts" region="required" title="src/app/hero-detail.component.ts (excerpt)" linenums="false">
 
 </code-example>
-
-
-
-<div class="l-sub-section">
-
-
-
-Reactive validators are simple, composable functions.
-Configuring validation is harder in template-driven forms where you must wrap validators in a directive.
-
-</div>
-
-
-
-Update the diagnostic message at the bottom of the template to display the form's validity status.
 
 
 <code-example path="reactive-forms/src/app/hero-detail-3.component.html" region="form-value-json" title="src/app/hero-detail.component.html (excerpt)" linenums="false">
@@ -535,7 +295,7 @@ Update the diagnostic message at the bottom of the template to display the form'
 
 
 
-The browser displays the following:
+Браузер отобразит следующее:
 
 
 <figure>
@@ -544,25 +304,14 @@ The browser displays the following:
 
 
 
-`Validators.required` is working. The status is `INVALID` because the input box has no value.
-Type into the input box to see the status change from `INVALID` to `VALID`.
-
-In a real app, you'd replace the diagnosic message with a user-friendly experience.
+Статус `INVALID`, т.к поле ввода пустое. Можно написать туда что-нибудь, тогда статус сменится на `VALID`.
 
 
-Using `Validators.required` is optional for the rest of the guide.
-It remains in each of the following examples with the same configuration.
 
-For more on validating Angular forms, see the
-[Form Validation](guide/form-validation) guide.
-
-
-### More FormControls
-A hero has more than a name.
-A hero has an address, a super power and sometimes a sidekick too.
-
-The address has a state property. The user will select a state with a `<select>` box and you'll populate
-the `<option>` elements with states. So import `states` from `data-model.ts`.
+### Больше FormControls
+У героя может быть не только имя, но и адрес, суперсила, а иногда и друг.
+В случае с адресом, пользователю будет предложено выбрать из списка штатов (`<select>`, содержащий `<option>` элементы со штатами). 
+Поэтому необходимо импортировать states из `data-model.ts`
 
 <code-example path="reactive-forms/src/app/hero-detail-4.component.ts" region="imports" title="src/app/hero-detail.component.ts (excerpt)" linenums="false">
 
@@ -570,7 +319,7 @@ the `<option>` elements with states. So import `states` from `data-model.ts`.
 
 
 
-Declare the `states` property and add some address `FormControls` to the `heroForm` as follows.
+Объявляется проперти `states` и добавляется несколько адресов в `heroForm`
 
 
 <code-example path="reactive-forms/src/app/hero-detail-4.component.ts" region="v4" title="src/app/hero-detail.component.ts (excerpt)" linenums="false">
@@ -579,8 +328,8 @@ Declare the `states` property and add some address `FormControls` to the `heroFo
 
 
 
-Then add corresponding markup in `hero-detail.component.html`
-within the `form` element.
+Затем требуется добавить соответствующую разметку в файле `hero-detail.component.html` в элементе формы.
+
 
 
 <code-example path="reactive-forms/src/app/hero-detail-4.component.html" title="src/app/hero-detail.component.html" linenums="false">
@@ -589,72 +338,33 @@ within the `form` element.
 
 
 
-<div class="alert is-helpful">
-
-
-
-*Reminder*: Ignore the many mentions of `form-group`,
-`form-control`, `center-block`, and `checkbox` in this markup.
-Those are _bootstrap_ CSS classes that Angular itself ignores.
-Pay attention to the `formGroupName` and `formControlName` attributes.
-They are the Angular directives that bind the HTML controls to the
-Angular `FormGroup` and `FormControl` properties in the component class.
-
-
-</div>
-
-
-
-The revised template includes more text inputs, a select box for the `state`, radio buttons for the `power`,
-and a checkbox for the `sidekick`.
-
-You must bind the option's value property with `[value]="state"`.
-If you do not bind the value, the select shows the first option from the data model.
-
-The component _class_ defines control properties without regard for their representation in the template.
-You define the `state`, `power`, and `sidekick` controls the same way you defined the `name` control.
-You tie these controls to the template HTML elements in the same way,
-specifying the `FormControl` name with the `formControlName` directive.
-
-See the API reference for more information about
-[radio buttons](api/forms/RadioControlValueAccessor "API: RadioControlValueAccessor"),
-[selects](api/forms/SelectControlValueAccessor "API: SelectControlValueAccessor"), and
-[checkboxes](api/forms/CheckboxControlValueAccessor "API: CheckboxControlValueAccessor").
+Измененный шаблон содержит больше инпутов, селектбокс для states, радио-кнопки для суперсилы, чекбокс для `sidekick`.
+Нужно обязательно связать значение option с `[value] = "state"`. Если этого не сделать, селект будет показывать значение первого option из модели данных.
+Класс компонента определяет свойства управления без учета их представления в шаблоне. Требуется определить элементы `state`, `power` и `sidekick` так же, 
+как определено управление `name`. 
+Аналогичным образом привязываются эти элементы управления к HTML-элементам шаблона, указывается имя `FormControl` директивой `formControlName`.
 
 
 
 {@a grouping}
 
 
-### Nested FormGroups
+### Вложенные  FormGroups
 
-This form is getting big and unwieldy. You can group some of the related `FormControls`
-into a nested `FormGroup`. The `street`, `city`, `state`, and `zip` are properties
-that would make a good _address_ `FormGroup`.
-Nesting groups and controls in this way allows you to
-mirror the hierarchical structure of the data model
-and helps track validation and state for related sets of controls.
-
-You used the `FormBuilder` to create one `FormGroup` in this component called `heroForm`.
-Let that be the parent `FormGroup`.
-Use `FormBuilder` again to create a child `FormGroup` that encapsulates the address controls;
-assign the result to a new `address` property of the parent `FormGroup`.
+Форма становится большой и громоздкой, поэтому можно сгруппировать некоторые из связанных FormControls во вложенную группу `FormGroup`. 
+`Street`, `city`, `zip code`, `state` вместе являются хорошей `FormGroup` с именем _adress_. 
+Вложенные группы и элементы управления таким образом позволяют отражать иерархическую структуру модели данных и помогают отслеживать проверку и 
+валидность соответствующих наборов элементов. Ранее использовалась `FormBuilder` для создания одной `FormGroup` в компоненте `heroForm`, пусть это будет 
+родительская группа форм. Снова необходимо использовать `FormBuilder` для создания дочерней FormGroup, которая инкапсулирует элементы управления адресами; 
+Присваивается результат новому свойству _adress_ родительской `FormGroup`.
 
 <code-example path="reactive-forms/src/app/hero-detail-5.component.ts" region="v5" title="src/app/hero-detail.component.ts (excerpt)" linenums="false">
 
 </code-example>
 
-
-
-You’ve changed the structure of the form controls in the component class;
-you must make corresponding adjustments to the component template.
-
-In `hero-detail.component.html`, wrap the address-related `FormControls` in a `div`.
-Add a `formGroupName` directive to the `div` and bind it to `"address"`.
-That's the property of the _address_ child `FormGroup` within the parent `FormGroup` called `heroForm`.
-
-To make this change visually obvious, slip in an `<h4>` header near the top with the text, _Secret Lair_.
-The new _address_ HTML looks like this:
+Структуру элементов управления формы в классе компонентов изменена, теперь нужно внести соответствующие корректировки в шаблон компонента. 
+Добавляется директиву `formGroupName` в div и привязывается к «adress». 
+Чтобы увидеть эти изменения, требуется изменить `hero-detail.component.html` следующим образом:
 
 
 <code-example path="reactive-forms/src/app/hero-detail-5.component.html" region="add-group" title="src/app/hero-detail.component.html (excerpt)" linenums="false">
@@ -663,8 +373,7 @@ The new _address_ HTML looks like this:
 
 
 
-After these changes, the JSON output in the browser shows the revised _form model_
-with the nested address `FormGroup`:
+После этих изменений вывод JSON в браузере показывает измененную модель формы с вложенным адресом `FormGroup`:
 
 
 <figure>
@@ -673,22 +382,12 @@ with the nested address `FormGroup`:
 
 
 
-Great! You’ve made a group and you can see that the template
-and the form model are talking to one another.
-
-
-
 {@a properties}
 
 
-## Inspect _FormControl_ Properties
-At the moment, you're dumping the entire form model onto the page.
-Sometimes you're interested only in the state of one particular `FormControl`.
+## Проверка свойств _FormControl_
+Можно проверить отдельный `FormControl` в форме, извлекая его методом `.get ()`. Также возможно отобразить значение на странице, добавив следующее:
 
-You can inspect an individual `FormControl` within a form by extracting it with the `.get()` method.
-You can do this _within_ the component class or display it on the
-page by adding the following to the template,
-immediately after the `{{form.value | json}}` interpolation as follows:
 
 
 <code-example path="reactive-forms/src/app/hero-detail-5.component.html" region="inspect-value" title="src/app/hero-detail.component.html" linenums="false">
@@ -697,7 +396,7 @@ immediately after the `{{form.value | json}}` interpolation as follows:
 
 
 
-To get the state of a `FormControl` that’s inside a `FormGroup`, use dot notation to path to the control.
+Чтобы получить состояние `FormControl`, находящееся внутри `FormGroup`, используется точка для прописывания пути к элементу управления.
 
 
 <code-example path="reactive-forms/src/app/hero-detail-5.component.html" region="inspect-child-control" title="src/app/hero-detail.component.html" linenums="false">
@@ -706,8 +405,8 @@ To get the state of a `FormControl` that’s inside a `FormGroup`, use dot notat
 
 
 
-You can use this technique to display _any_ property of a `FormControl`
-such as one of the following:
+Можно использовать эту технику для отображения любого свойства `FormControl`, например, одного из следующих:
+
 
 <style>
   td, th {vertical-align: top}
@@ -746,7 +445,7 @@ such as one of the following:
     <td>
 
 
-      the value of a `FormControl`.
+      значение FormControl
     </td>
 
   </tr>
@@ -760,8 +459,8 @@ such as one of the following:
     <td>
 
 
-      the validity of a `FormControl`. Possible values: `VALID`,
-       `INVALID`, `PENDING`, or `DISABLED`.
+      валидность FormControl. Возможные значения: VALID, INVALID, PENDING или DISABLED
+
     </td>
 
   </tr>
@@ -775,24 +474,7 @@ such as one of the following:
     <td>
 
 
-      `true` if the user has _not_ changed the value in the UI.
-      Its opposite is `myControl.dirty`.
-    </td>
-
-  </tr>
-
-  <tr>
-
-    <td>
-      <code>myControl.untouched</code>
-    </td>
-
-    <td>
-
-
-      `true` if the control user has not yet entered the HTML control
-       and triggered its blur event. Its opposite is `myControl.touched`.
-
+      true, если пользователь не менял значение. Противоположностью является myControl.dirty
     </td>
 
   </tr>
@@ -800,102 +482,29 @@ such as one of the following:
 </table>
 
 
+## Модель данных и модель формы
 
-Learn about other `FormControl` properties in the
-[_AbstractControl_](api/forms/AbstractControl) API reference.
+На данный момент форма отображает пустые значения, но `HeroDetailComponent` должен отображать значения героя, возможно, полученного с удаленного сервера. 
+Сейчас `HeroDetailComponent` получает своего героя от родителя `HeroListComponent`.
+`hero` с сервера - это модель данных. Структура `FormControl` - это модель формы.
+Компонент должен скопировать значения героя в модели данных в модель формы. Есть два важных момента:
 
-One common reason for inspecting `FormControl` properties is to
-make sure the user entered valid values.
-Read more about validating Angular forms in the
-[Form Validation](guide/form-validation) guide.
+1. Разработчик должен понять, как свойства модели данных сопоставляются с свойствами модели формы.
 
+2. Пользователь изменяет поток из элементов DOM в модель формы, а не в модель данных, а элементы управления формы никогда не обновляют модель данных.
 
-
-{@a data-model-form-model}
-
-
-## The _data model_ and the _form model_
-
-At the moment, the form is displaying empty values.
-The `HeroDetailComponent` should display values of a hero,
-possibly a hero retrieved from a remote server.
-
-In this app, the `HeroDetailComponent` gets its hero from a parent `HeroListComponent`
-
-The `hero` from the server is the **_data model_**.
-The `FormControl` structure is the **_form model_**.
-
-The component must copy the hero values in the _data model_ into the _form model_.
-There are two important implications:
-
-1. The developer must understand how the properties of the _data model_
-map to the properties of the _form model_.
-
-2. User changes flow from the DOM elements to the _form model_, not to the _data model_.
-The form controls never update the _data model_.
-
-The _form_ and _data_ model structures need not match exactly.
-You often present a subset of the _data model_ on a particular screen.
-But it makes things easier if the shape of the _form model_ is close to the shape of the _data model_.
-
-In this `HeroDetailComponent`, the two models are quite close.
-
-Recall the definition of `Hero` in `data-model.ts`:
-
-<code-example path="reactive-forms/src/app/data-model.ts" region="model-classes" title="src/app/data-model.ts (classes)" linenums="false">
-
-</code-example>
+Структуры форм и моделей данных не обязательно совпадают, но в HeroDetailComponent две модели довольно близки.
 
 
+## Заполнение формы модели, используя _setValue_ и _patchValue_
 
-Here, again, is the component's `FormGroup` definition.
+Ранее создан элемент управления и одновременно инициализировали его значение. 
+Также можно инициализировать или сбросить значения позже с помощью методов `setValue` и `patchValue`.
 
-
-<code-example path="reactive-forms/src/app/hero-detail-6.component.ts" region="hero-form-model" title="src/app/hero-detail.component.ts (excerpt)" linenums="false">
-
-</code-example>
-
-
-
-There are two significant differences between these models:
-
-1. The `Hero` has an `id`. The form model does not because you generally don't show primary keys to users.
-
-1. The `Hero` has an array of addresses. This form model presents only one address,
-a choice [revisited below](guide/reactive-forms#form-array "Form arrays").
-
-Nonetheless, the two models are pretty close in shape and you'll see in a moment how this alignment facilitates copying the _data model_ properties
-to the _form model_ with the `patchValue` and `setValue` methods.
-
-
-Take a moment to refactor the _address_ `FormGroup` definition for brevity and clarity as follows:
-
-<code-example path="reactive-forms/src/app/hero-detail-7.component.ts" region="address-form-group" title="src/app/hero-detail-7.component.ts" linenums="false">
-
-</code-example>
-
-
-
-Also be sure to update the import from `data-model` so you can reference the `Hero` and `Address` classes:
-
-<code-example path="reactive-forms/src/app/hero-detail-7.component.ts" region="import-address" title="src/app/hero-detail-7.component.ts" linenums="false">
-
-</code-example>
-
-
-
-
-{@a set-data}
-
-
-## Populate the form model with _setValue_ and _patchValue_
-Previously you created a control and initialized its value at the same time.
-You can also initialize or reset the values _later_ with the
-`setValue` and `patchValue` methods.
 
 ### _setValue_
-With **`setValue`**, you assign _every_ form control value _at once_
-by passing in a data object whose properties exactly match the _form model_ behind the `FormGroup`.
+С помощью `setValue` сразу назначается каждое значение, передавая объект данных, свойства которого точно соответствуют модели формы `FormGroup`.
+
 
 
 <code-example path="reactive-forms/src/app/hero-detail-7.component.ts" region="set-value" title="src/app/hero-detail.component.ts (excerpt)" linenums="false">
@@ -904,33 +513,15 @@ by passing in a data object whose properties exactly match the _form model_ behi
 
 
 
-The `setValue` method checks the data object thoroughly before assigning any form control values.
-
-It will not accept a data object that doesn't match the FormGroup structure or is
-missing values for any control in the group. This way, it can return helpful
-error messages if you have a typo or if you've nested controls incorrectly.
-`patchValue` will fail silently.
-
-On the other hand,`setValue` will catch
-the error and report it clearly.
-
-Notice that you can _almost_ use the entire `hero` as the argument to `setValue`
-because its shape is similar to the component's `FormGroup` structure.
-
-You can only show the hero's first address and you must account for the possibility that the `hero` has no addresses at all.
-This explains the conditional setting of the `address` property in the data object argument:
-
-<code-example path="reactive-forms/src/app/hero-detail-7.component.ts" region="set-value-address" title="src/app/hero-detail-7.component.ts" linenums="false">
-
-</code-example>
+Метод `setValue` тщательно проверяет объект данных перед назначением значений. 
+Необходимо обратить внимание, что можно использовать `hero` как аргумент `setValue`, потому что его форма похожа на структуру `FormGroup` компонента. 
+Можно показать только первый адрес героя, но необходимо учитывать возможность того, что у героя нет адресов вообще.
 
 
 
 ### _patchValue_
-With **`patchValue`**, you can assign values to specific controls in a `FormGroup`
-by supplying an object of key/value pairs for just the controls of interest.
-
-This example sets only the form's `name` control.
+С помощью функции `patchValue` вы можете назначать значения определенным элементам `FormGroup`, предоставляя объект пар ключ / значение только для интересующих элементов.
+Далее устанавливается только управление именем:
 
 <code-example path="reactive-forms/src/app/hero-detail-6.component.ts" region="patch-value" title="src/app/hero-detail.component.ts (excerpt)" linenums="false">
 
@@ -938,19 +529,15 @@ This example sets only the form's `name` control.
 
 
 
-With **`patchValue`** you have more flexibility to cope with wildly divergent data and form models.
-But unlike `setValue`,  `patchValue` cannot check for missing control
-values and does not throw helpful errors.
+С `patchValue` больше гибкости, чтобы справляться с различающимися данными и формами моделей.Но в отличие от `setValue`, 
+`patchValue` не может проверять недостающие значения и не вызывает ошибок.
 
-### When to set form model values (_ngOnChanges_)
 
-Now you know _how_ to set the _form model_ values. But _when_ do you set them?
-The answer depends upon when the component gets the _data model_ values.
+### Когда устанавливать значения в форму (ngOnChanges)
 
-The `HeroDetailComponent` in this reactive forms sample is nested within a _master/detail_ `HeroListComponent` ([discussed below](guide/reactive-forms#hero-list)).
-The `HeroListComponent` displays hero names to the user.
-When the user clicks on a hero, the list component passes the selected hero into the `HeroDetailComponent`
-by binding to its `hero` input property.
+Теперь ясно, как устанавливать значения модели. Но когда их необходимо устанавливать? Ответ зависит от того, когда компонент получает значения модели данных.
+HeroDetailComponent вложен в `HeroListComponent`, а `HeroListComponent` отображает имена героев. Когда пользователь нажимает на героя, компонент списка передает 
+выбранного героя в `HeroDetailComponent`, привязывая его к полю ввода героя.
 
 
 <code-example path="reactive-forms/src/app/hero-list.component.1.html" title="hero-list.component.html (simplified)" linenums="false">
@@ -959,13 +546,9 @@ by binding to its `hero` input property.
 
 
 
-In this approach, the value of `hero` in the `HeroDetailComponent` changes
-every time the user selects a new hero.
-You should call  _setValue_ in the [ngOnChanges](guide/lifecycle-hooks#onchanges)
-hook, which Angular calls whenever the input `hero` property changes
-as the following steps demonstrate.
-
-First, import the `OnChanges` and `Input` symbols in `hero-detail.component.ts`.
+В этом подходе значение hero в HeroDetailComponent изменяется каждый раз, когда пользователь выбирает нового героя. Необходимо вызвать `setValue` 
+вместе с `ngOnChanges`, который вызывает Angular методы всякий раз, когда свойство hero изменяется.
+Сначала импортируется `OnChanges` и `Input` в файле `hero-detail.component.ts`.
 
 
 <code-example path="reactive-forms/src/app/hero-detail-6.component.ts" region="import-input" title="src/app/hero-detail.component.ts (core imports)" linenums="false">
@@ -974,7 +557,8 @@ First, import the `OnChanges` and `Input` symbols in `hero-detail.component.ts`.
 
 
 
-Add the `hero` input property.
+Добавьте `hero` `Input`.
+
 
 <code-example path="reactive-forms/src/app/hero-detail-6.component.ts" region="hero" title="src/app/hero-detail-6.component.ts" linenums="false">
 
@@ -982,7 +566,8 @@ Add the `hero` input property.
 
 
 
-Add the `ngOnChanges` method to the class as follows:
+Добавьте метод `ngOnChanges` в класс следующим образом:
+
 
 
 <code-example path="reactive-forms/src/app/hero-detail-7.component.ts" region="ngOnChanges-1" title="src/app/hero-detail.component.ts (ngOnchanges)" linenums="false">
@@ -991,12 +576,11 @@ Add the `ngOnChanges` method to the class as follows:
 
 
 
-### _reset_ the form flags
+### _reset_ флагов формы
 
-You should  reset the form when the hero changes so that
-control values from the previous hero are cleared and
-status flags are restored to the _pristine_ state.
-You could call `reset` at the top of `ngOnChanges` like this.
+При смене героя, необходимо всегда сбрасывать форму, чтобы значения от предыдущего героя были очищены, а статусные флаги восстановлены в 
+первоначальное состояние. reset можно вызвать таким образом:
+
 
 <code-example path="reactive-forms/src/app/hero-detail-7.component.ts" region="reset" title="src/app/hero-detail-7.component.ts" linenums="false">
 
@@ -1004,9 +588,9 @@ You could call `reset` at the top of `ngOnChanges` like this.
 
 
 
-The `reset` method has an optional `state` value so you can reset the flags _and_ the control values at the same time.
-Internally, `reset` passes the argument to `setValue`.
-A little refactoring and `ngOnChanges` becomes this:
+Метод reset имеет необязательное значение состояния, так что можно одновременно сбросить флаги и значения. Внутри reset передает аргумент `setValue`. 
+После небольшого рефакторинга `ngOnChanges` становится следующим:
+
 
 <code-example path="reactive-forms/src/app/hero-detail-7.component.ts" region="ngOnChanges" title="src/app/hero-detail.component.ts (ngOnchanges - revised)" linenums="false">
 
@@ -1017,10 +601,10 @@ A little refactoring and `ngOnChanges` becomes this:
 {@a hero-list}
 
 
-### Create the _HeroListComponent_ and _HeroService_
+### Создание _HeroListComponent_ и _HeroService_
 
-The `HeroDetailComponent` is a nested sub-component of the `HeroListComponent` in a _master/detail_ view.
-Together they look a bit like this:
+`HeroDetailComponent` является вложенным подкомпонентом компонента `HeroListComponent` в представлении `master/detail`. Вместе они выглядят примерно так:
+
 
 
 <figure>
@@ -1029,49 +613,22 @@ Together they look a bit like this:
 
 
 
-The `HeroListComponent` uses an injected `HeroService` to retrieve heroes from the server
-and then presents those heroes to the user as a series of buttons.
-The `HeroService` emulates an HTTP service.
-It returns an `Observable` of heroes that resolves after a short delay,
-both to simulate network latency and to indicate visually
-the necessarily asynchronous nature of the application.
-
-When the user clicks on a hero,
-the component sets its `selectedHero` property which
-is bound to the `hero` input property of the `HeroDetailComponent`.
-The `HeroDetailComponent` detects the changed hero and re-sets its form
-with that hero's data values.
-
-A "Refresh" button clears the hero list and the current selected hero before refetching the heroes.
-
-The remaining `HeroListComponent` and `HeroService` implementation details are not relevant to understanding reactive forms.
-The techniques involved are covered elsewhere in the documentation, including the _Tour of Heroes_
-[here](tutorial/toh-pt3 "ToH: Multiple Components") and [here](tutorial/toh-pt4 "ToH: Services").
-
-If you're coding along with the steps in this reactive forms tutorial,
-create the pertinent files based on the
-[source code displayed below](guide/reactive-forms#source-code "Reactive Forms source code").
-Notice that `hero-list.component.ts` imports `Observable` and `finally` while `hero.service.ts` imports `Observable`, `of`,
-and `delay` from `rxjs`.
-Then return here to learn about _form array_ properties.
+HeroListComponent использует внедренный `HeroService` для извлечения героев с сервера, а затем отображает этих героев пользователю в виде серии кнопок. 
+В данном случае HeroService эмулирует HTTP-сервис.
+Когда пользователь нажимает на героя, компонент устанавливает `selectedHero`, который привязан к полю ввода hero в `HeroDetailComponent`. 
+HeroDetailComponent обнаруживает измененного героя и изменяет форму с значениями этого героя. 
+Кнопка «Refresh» очищает и список героев, и текущего выбранного героя, перед тем как заново показать героев.
 
 
 
 {@a form-array}
 
 
-## Use _FormArray_ to present an array of _FormGroups_
-So far, you've seen `FormControls` and `FormGroups`.
-A `FormGroup` is a named object whose property values are `FormControls` and other `FormGroups`.
+## Использование _FormArray_ для представления массива _FormGroups_
 
-Sometimes you need to present an arbitrary number of controls or groups.
-For example, a hero may have zero, one, or any number of addresses.
-
-The `Hero.addresses` property is an array of `Address` instances.
-An _address_ `FormGroup` can display one `Address`.
-An Angular `FormArray` can display an array of _address_ `FormGroups`.
-
-To get access to the `FormArray` class, import it into `hero-detail.component.ts`:
+Ранее использовался только FormControls и FormGroups. FormGroup - объект, значениями свойств которого являются FormControls и другие FormGroups.
+Свойство Hero.addresses представляет собой массив экземпляров адреса. adress FormGroup может отображать ровно один Adress, а FormArray может отображать массив из adress. 
+Чтобы получить доступ к классу FormArray, необходимо импортировать его в файл hero-detail.component.ts:
 
 <code-example path="reactive-forms/src/app/hero-detail-8.component.ts" region="imports" title="src/app/hero-detail.component.ts (excerpt)" linenums="false">
 
@@ -1079,19 +636,17 @@ To get access to the `FormArray` class, import it into `hero-detail.component.ts
 
 
 
-To _work_ with a `FormArray` you do the following:
+Работа с FormArray заключается в следующем:
 
-1. Define the items (`FormControls` or `FormGroups`) in the array.
 
-1. Initialize the array with items created from data in the _data model_.
+1. Определить элементы (`FormControls` или `FormGroups`) в массиве.
 
-1. Add and remove items as the user requires.
+1. Инициализировать массив элементами, созданными из данных в _data model_.
 
-In this guide, you define a `FormArray` for `Hero.addresses` and
-let the user add or modify addresses (removing addresses is your homework).
+1. Добавлять и удалять элементы по мере необходимости.
 
-You’ll need to redefine the form model in the `HeroDetailComponent` constructor,
-which currently only displays the first hero address in an _address_ `FormGroup`.
+Нужно будет переопределить модель формы в конструкторе `HeroDetailComponent`, который в настоящее время отображает только первый адрес героя.
+
 
 <code-example path="reactive-forms/src/app/hero-detail-7.component.ts" region="address-form-group" title="src/app/hero-detail-7.component.ts" linenums="false">
 
@@ -1099,11 +654,10 @@ which currently only displays the first hero address in an _address_ `FormGroup`
 
 
 
-### From _address_ to _secret lairs_
+### От адреса к секретным логовам
 
-From the user's point of view, heroes don't have _addresses_.
-_Addresses_ are for mere mortals. Heroes have _secret lairs_!
-Replace the _address_ `FormGroup` definition with a _secretLairs_ `FormArray` definition:
+С точки зрения пользователя, у героев нет адресов, ведь адреса предназначены для простых смертных. Герои проживают в секретных логовах! Необходимо заменить `adres` `FormGroup` на secretLairs `FormArray`:
+
 
 <code-example path="reactive-forms/src/app/hero-detail-8.component.ts" region="secretLairs-form-array" title="src/app/hero-detail-8.component.ts" linenums="false">
 
@@ -1111,50 +665,19 @@ Replace the _address_ `FormGroup` definition with a _secretLairs_ `FormArray` de
 
 
 
-<div class="alert is-helpful">
+### Инициализация secretLairs FormArray
 
-
-
-Changing the form control name from `address` to `secretLairs` drives home an important point:
-the _form model_ doesn't have to match the _data model_.
-
-Obviously there has to be a relationship between the two.
-But it can be anything that makes sense within the application domain.
-
-_Presentation_ requirements often differ from _data_ requirements.
-The reactive forms approach both emphasizes and facilitates this distinction.
-
-
-</div>
-
-
-
-### Initialize the "secretLairs" _FormArray_
-
-The default form displays a nameless hero with no addresses.
-
-You need a method to populate (or repopulate) the _secretLairs_ with actual hero addresses whenever
-the parent `HeroListComponent` sets the `HeroListComponent.hero` input property to a new `Hero`.
-
-The following `setAddresses` method replaces the _secretLairs_ `FormArray` with a new `FormArray`,
-initialized by an array of hero address `FormGroups`.
+По умолчанию в форме отображается безымянный герой без адресов. Теперь необходим метод для заполнения `secretLairs` реальными адресами героев:
+Следующий `метод setAddresses` заменяет secretLairs `FormArray` новым `FormArray`:
 
 <code-example path="reactive-forms/src/app/hero-detail-8.component.ts" region="set-addresses" title="src/app/hero-detail-8.component.ts" linenums="false">
 
 </code-example>
 
+### Получение _FormArray_
+`HeroDetailComponent` должен иметь возможность отображать, добавлять и удалять элементы из secretArray.  
+Для получения ссылки на этот FormArray используется метод `FormGroup.get`:
 
-
-Notice that you replace the previous `FormArray` with the **`FormGroup.setControl` method**, not with `setValue`.
-You're replacing a _control_, not the _value_ of a control.
-
-Notice also that the _secretLairs_ `FormArray` contains **`FormGroups`**, not `Addresses`.
-
-### Get the _FormArray_
-The `HeroDetailComponent` should be able to display, add, and remove items from the _secretLairs_ `FormArray`.
-
-Use the `FormGroup.get` method to acquire a reference to that `FormArray`.
-Wrap the expression in a `secretLairs` convenience property for clarity and re-use.
 
 <code-example path="reactive-forms/src/app/hero-detail-8.component.ts" region="get-secret-lairs" title="src/app/hero-detail.component.ts (secretLayers property)" linenums="false">
 
@@ -1162,27 +685,21 @@ Wrap the expression in a `secretLairs` convenience property for clarity and re-u
 
 
 
-### Display the _FormArray_
+### Отображение _FormArray_
 
-The current HTML template displays a single _address_ `FormGroup`.
-Revise it to display zero, one, or more of the hero's _address_ `FormGroups`.
+В текущем HTML-шаблоне отображается только один адрес `FormGroup`, поэтому необходимо сделать так, чтобы отображались все адреса. 
+Это можно сделать используя `*ngFor`, предварительно обвернув необходимое содержимое тегом `<div>`.
+Но необходимо понимать, как писать `*ngFor`. Существует три ключевых момента:
 
-This is mostly a matter of wrapping the previous template HTML for an address in a `<div>` and
-repeating that `<div>` with `*ngFor`.
+1. Нужно добавить еще один `<div>`, вокруг `<div>` с помощью `*ngFor`, и установить директиву `formArrayName` для «secretLairs». 
+Это установит `secretLairs` `FormArray` как контекст для элементов управления формой во внутреннем шаблоне HTML.
 
-The trick lies in knowing how to write the `*ngFor`. There are three key points:
+1. Источником повторяющихся элементов является `FormArray.controls`, а не сам `FormArray`. 
 
-1. Add another wrapping `<div>`, around the `<div>` with `*ngFor`, and
-set its `formArrayName` directive to `"secretLairs"`.
-This step establishes the _secretLairs_ `FormArray` as the context for form controls in the inner, repeated HTML template.
+1. Каждой повторной группе `FormGroup` требуется уникальная `formGroupName`, которая должна быть индексом `FormGroup` в `FormArray`.
 
-1. The source of the repeated items is the `FormArray.controls`, not the `FormArray` itself.
-Each control is an _address_ `FormGroup`, exactly what the previous (now repeated) template HTML expected.
 
-1. Each repeated `FormGroup` needs a unique `formGroupName` which must be the index of the `FormGroup` in the `FormArray`.
-You'll re-use that index to compose a unique label for each address.
-
-Here's the skeleton for the _secret lairs_ section of the HTML template:
+Вот скелет для секции секретных логов HTML-шаблона:
 
 <code-example path="reactive-forms/src/app/hero-detail-8.component.html" region="form-array-skeleton" title="src/app/hero-detail.component.html (*ngFor)" linenums="false">
 
@@ -1190,7 +707,7 @@ Here's the skeleton for the _secret lairs_ section of the HTML template:
 
 
 
-Here's the complete template for the _secret lairs_ section:
+Вот полный шаблон для секретных логов:
 
 <code-example path="reactive-forms/src/app/hero-detail-8.component.html" region="form-array" title="src/app/hero-detail.component.html (excerpt)">
 
@@ -1198,9 +715,10 @@ Here's the complete template for the _secret lairs_ section:
 
 
 
-### Add a new lair to the _FormArray_
+### Добавление нового логова в _FormArray_
 
-Add an `addLair` method that gets the _secretLairs_ `FormArray` and appends a new _address_ `FormGroup` to it.
+
+Нужно добавить метод `addLair`, который получает `secretLairs` и добавляет туда новый адрес.
 
 <code-example path="reactive-forms/src/app/hero-detail-8.component.ts" region="add-lair" title="src/app/hero-detail.component.ts (addLair method)" linenums="false">
 
@@ -1208,7 +726,7 @@ Add an `addLair` method that gets the _secretLairs_ `FormArray` and appends a ne
 
 
 
-Place a button on the form so the user can add a new _secret lair_ and wire it to the component's `addLair` method.
+Кнопка помещается в форму, чтобы пользователь мог добавить новое тайное логово и подключается к методу `addLair` компонента.
 
 
 <code-example path="reactive-forms/src/app/hero-detail-8.component.html" region="add-lair" title="src/app/hero-detail.component.html (addLair button)" linenums="false">
@@ -1216,61 +734,13 @@ Place a button on the form so the user can add a new _secret lair_ and wire it t
 </code-example>
 
 
+## Наблюдение за изменениями 
 
-<div class="alert is-important">
-
-
-
-Be sure to **add the `type="button"` attribute**.
-In fact, you should always specify a button's `type`.
-Without an explicit type, the button type defaults to "submit".
-When you later add a _form submit_ action, every "submit" button triggers the submit action which
-might do something like save the current changes.
-You do not want to save changes when the user clicks the _Add a Secret Lair_ button.
-
-
-</div>
-
-
-
-### Try it!
-
-Back in the browser, select the hero named "Magneta".
-"Magneta" doesn't have an address, as you can see in the diagnostic JSON at the bottom of the form.
-
-
-<figure>
-  <img src="generated/images/guide/reactive-forms/addresses-array.png" alt="JSON output of addresses array">
-</figure>
-
-
-
-Click the "_Add a Secret Lair_" button.
-A new address section appears. Well done!
-
-### Remove a lair
-
-This example can _add_ addresses but it can't _remove_ them.
-For extra credit, write a `removeLair` method and wire it to a button on the repeating address HTML.
-
-
-
-{@a observe-control}
-
-
-## Observe control changes
-
-Angular calls `ngOnChanges` when the user picks a hero in the parent `HeroListComponent`.
-Picking a hero changes the `HeroDetailComponent.hero` input property.
-
-Angular does _not_ call `ngOnChanges` when the user modifies the hero's _name_ or _secret lairs_.
-Fortunately, you can learn about such changes by subscribing to one of the form control properties
-that raises a change event.
-
-These are properties, such as `valueChanges`, that return an RxJS `Observable`.
-You don't need to know much about RxJS `Observable` to monitor form control values.
-
-Add the following method to log changes to the value of the _name_ `FormControl`.
+Angular вызывает `ngOnChanges`, когда пользователь выбирает героя в родительском `HeroListComponent`, 
+выбор героя изменяет поле `HeroDetailComponent.hero`, но Angular не вызывает `ngOnChanges`, когда пользователь изменяет имя героя или секретные логова. 
+К счастью, возможно узнать о таких изменениях, подписавшись на одно из свойств form control, которое вызывает событие изменения. Это свойства, такие как 
+`valueChanges`, которые возвращают RxJS Observable. 
+Нужно следующий метод, чтобы было возможно отслеживать изменения:
 
 <code-example path="reactive-forms/src/app/hero-detail.component.ts" region="log-name-change" title="src/app/hero-detail.component.ts (logNameChange)" linenums="false">
 
@@ -1278,7 +748,7 @@ Add the following method to log changes to the value of the _name_ `FormControl`
 
 
 
-Call it in the constructor, after creating the form.
+Он вызывается в конструкторе, после создания формы
 
 <code-example path="reactive-forms/src/app/hero-detail-8.component.ts" region="ctor" title="src/app/hero-detail-8.component.ts" linenums="false">
 
@@ -1286,35 +756,21 @@ Call it in the constructor, after creating the form.
 
 
 
-The `logNameChange` method pushes name-change values into a `nameChangeLog` array.
-Display that array at the bottom of the component template with this `*ngFor` binding:
+Метод `logNameChange` добавляет значения изменения имени в массив `nameChangeLog` Необходимо отобразить этот массив в нижней части шаблона компонента
+ с помощью `*ngFor`:
+
 
 <code-example path="reactive-forms/src/app/hero-detail.component.html" region="name-change-log" title="src/app/hero-detail.component.html (Name change log)" linenums="false">
 
 </code-example>
 
 
+## Cохранение данных формы
 
-Return to the browser, select a hero (e.g, "Magneta"), and start typing in the _name_ input box.
-You should see a new name in the log after each keystroke.
-
-### When to use it
-
-An interpolation binding is the easier way to _display_ a name change.
-Subscribing to an observable form control property is handy for triggering
-application logic _within_ the component class.
-
-
-
-{@a save}
-
-
-## Save form data
-
-The `HeroDetailComponent` captures user input but it doesn't do anything with it.
-In a real app, you'd probably save those hero changes.
-In a real app, you'd also be able to revert unsaved changes and resume editing.
-After you implement both features in this section, the form will look like this:
+`HeroDetailComponent` перехватывает пользовательский ввод, но он ничего не делает с ним. 
+В реальном приложении было бы необходимо сохранять эти данные. 
+В реальном приложении возможно вернуть несохраненные изменения и возобновить редактирование. 
+После реализации обеих функций форма будет выглядеть так:
 
 
 <figure>
@@ -1324,9 +780,8 @@ After you implement both features in this section, the form will look like this:
 
 
 ### Save
-In this sample application, when the user submits the form,
-the `HeroDetailComponent` will pass an instance of the hero _data model_
-to a save method on the injected `HeroService`.
+Когда пользователь отправляет форму, `HeroDetailComponent` передает экземпляр модели данных героя методу сохранения `HeroService`.
+
 
 <code-example path="reactive-forms/src/app/hero-detail.component.ts" region="on-submit" title="src/app/hero-detail.component.ts (onSubmit)" linenums="false">
 
@@ -1334,39 +789,17 @@ to a save method on the injected `HeroService`.
 
 
 
-This original `hero` had the pre-save values. The user's changes are still in the _form model_.
-So you create a new `hero` from a combination of original hero values (the `hero.id`)
-and deep copies of the changed form model values, using the `prepareSaveHero` helper.
+У первого героя изначально были сохранены какие-то данные, а изменения пользователя по-прежнему находятся в форме. 
+Таким образом, создается новый герой из 
+комбинации уникальных значений героя `(hero.id)` и других копий измененных значений модели, используя помощник prepareSaveHero.
 
 
 <code-example path="reactive-forms/src/app/hero-detail.component.ts" region="prepare-save-hero" title="src/app/hero-detail.component.ts (prepareSaveHero)" linenums="false">
 
 </code-example>
 
-
-
-<div class="l-sub-section">
-
-
-
-**Address deep copy**
-
-Had you assigned the `formModel.secretLairs` to `saveHero.addresses` (see line commented out),
-the addresses in `saveHero.addresses` array would be the same objects
-as the lairs in the `formModel.secretLairs`.
-A user's subsequent changes to a lair street would mutate an address street in the `saveHero`.
-
-The `prepareSaveHero` method makes copies of the form model's `secretLairs` objects so that can't happen.
-
-
-</div>
-
-
-
-### Revert (cancel changes)
-The user cancels changes and reverts the form to the original state by pressing the _Revert_ button.
-
-Reverting is easy. Simply re-execute the `ngOnChanges` method that built the _form model_ from the original, unchanged `hero` _data model_.
+### Revert (сброс изменений)
+При нажатии кнопки Revert, пользователь отменяет изменения и возвращает форму в исходное состояние:
 
 <code-example path="reactive-forms/src/app/hero-detail.component.ts" region="revert" title="src/app/hero-detail.component.ts (revert)" linenums="false">
 
@@ -1374,84 +807,14 @@ Reverting is easy. Simply re-execute the `ngOnChanges` method that built the _fo
 
 
 
-### Buttons
-Add the "Save" and "Revert" buttons near the top of the component's template:
+### Кнопки
+Нужно добавить кнопки Save и Revert  на HTML шаблон:
 
 <code-example path="reactive-forms/src/app/hero-detail.component.html" region="buttons" title="src/app/hero-detail.component.html (Save and Revert buttons)" linenums="false">
 
 </code-example>
 
-
-
-The buttons are disabled until the user "dirties" the form by changing a value in any of its form controls (`heroForm.dirty`).
-
-Clicking a button of type `"submit"` triggers the `ngSubmit` event which calls the component's `onSubmit` method.
-Clicking the revert button triggers a call to the component's `revert` method.
-Users now can save or revert changes.
-
-This is the final step in the demo.
-Try the <live-example plnkr="final" title="Reactive Forms (final) in Plunker"></live-example>.
-
-
-
-
-## Conclusion
-
-This page covered:
-
-* How to create a reactive form component and its corresponding template.
-* How to use `FormBuilder` to simplify coding a reactive form.
-* Grouping `FormControls`.
-* Inspecting `FormControl` properties.
-* Setting data with `patchValue` and `setValue`.
-* Adding groups dynamically with `FormArray`.
-* Observing changes to the value of a `FormControl`.
-* Saving form changes.
-
-
-{@a source-code}
-
-
-The key files of the final version are as follows:
-
-
-<code-tabs>
-
-  <code-pane title="src/app/app.component.ts" path="reactive-forms/src/app/app.component.ts">
-
-  </code-pane>
-
-  <code-pane title="src/app/app.module.ts" path="reactive-forms/src/app/app.module.ts">
-
-  </code-pane>
-
-  <code-pane title="src/app/hero-detail.component.ts" path="reactive-forms/src/app/hero-detail.component.ts">
-
-  </code-pane>
-
-  <code-pane title="src/app/hero-detail.component.html" path="reactive-forms/src/app/hero-detail.component.html">
-
-  </code-pane>
-
-  <code-pane title="src/app/hero-list.component.html" path="reactive-forms/src/app/hero-list.component.html">
-
-  </code-pane>
-
-  <code-pane title="src/app/hero-list.component.ts" path="reactive-forms/src/app/hero-list.component.ts">
-
-  </code-pane>
-
-  <code-pane title="src/app/data-model.ts" path="reactive-forms/src/app/data-model.ts">
-
-  </code-pane>
-
-  <code-pane title="src/app/hero.service.ts" path="reactive-forms/src/app/hero.service.ts">
-
-  </code-pane>
-
-</code-tabs>
-
-
-
-You can download the complete source for all steps in this guide
-from the <live-example title="Reactive Forms Demo in Plunker">Reactive Forms Demo</live-example> live example.
+Кнопки отключены до тех пор, пока пользователь не запустит форму, изменив значение в любом из элементов формы `heroForm.dirty`. 
+Нажатие кнопки типа «submit» запускает событие ngSubmit, которое вызывает метод `onSubmit` компонента. 
+Щелчок по кнопке Revert вызывает метод сброса компонента. 
+Теперь пользователи могут сохранять или отменять изменения.
