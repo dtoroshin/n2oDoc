@@ -1,3 +1,0 @@
-
-# Tutorial: Tour of Heroes
-
