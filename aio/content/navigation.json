@@ -56,8 +56,8 @@
     },
     {
       "url": "guide/streamStatus",
-      "title": "Статус потока",
-      "tooltip": "fffff"
+      "title": "Состояние потока",
+      "tooltip": "Состояние потока"
     }
   ],
   "Footer": [
