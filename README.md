@@ -1,4 +1,4 @@
-##Развертывание:
+## Развертывание:
 
 git clone https://github.com/dtoroshin/n2oDoc.git
 
@@ -17,7 +17,7 @@ yarn docs
 yarn start
 
 
-##Добавление документа
+## Добавление документа
 
 1. cd n2oDoc/aio/content/guide
 
