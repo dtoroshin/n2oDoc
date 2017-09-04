@@ -13,14 +13,9 @@ Angular is a platform that makes it easy to build applications with the web. Ang
       <section>Get Going with Angular</section>
       <p>Get going on your own environment with the Quickstart.</p>
       <p class="card-footer" >
-        <a href="guide/quickstart" title="Angular Quickstart">Quickstart</a>
+        Quickstart
       </p>
   </div>
-  <a href="guide/architecture" class="docs-card" title="Angular Architecture">
-      <section>Fundamentals</section>
-      <p>Learn Angular application fundamentals, starting with an architecture overview.</p>
-      <p class="card-footer">Architecture</p>
-  </a>
 </div>
 
 ## Assumptions

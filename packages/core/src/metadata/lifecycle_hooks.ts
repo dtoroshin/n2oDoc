@@ -26,7 +26,7 @@ export interface SimpleChanges { [propName: string]: SimpleChange; }
  * and content children are checked if at least one of them has changed.
  * The `changes` parameter contains the changed properties.
  *
- * See {@linkDocs guide/lifecycle-hooks#onchanges "Lifecycle Hooks Guide"}.
+ * See
  *
  * @stable
  */
@@ -43,7 +43,7 @@ export interface OnChanges { ngOnChanges(changes: SimpleChanges): void; }
  * first time, and before any of its children have been checked. It is invoked only once when the
  * directive is instantiated.
  *
- * See {@linkDocs guide/lifecycle-hooks "Lifecycle Hooks Guide"}.
+ * See
  *
  * @stable
  */
@@ -66,7 +66,7 @@ export interface OnInit { ngOnInit(): void; }
  * See {@link KeyValueDiffers} and {@link IterableDiffers} for implementing custom dirty checking
  * for collections.
  *
- * See {@linkDocs guide/lifecycle-hooks#docheck "Lifecycle Hooks Guide"}.
+ * See
  *
  * @stable
  */
@@ -81,7 +81,7 @@ export interface DoCheck { ngDoCheck(): void; }
  * `ngOnDestroy` callback is typically used for any custom cleanup that needs to occur when the
  * instance is destroyed.
  *
- * See {@linkDocs guide/lifecycle-hooks "Lifecycle Hooks Guide"}.
+ * See
  *
  * @stable
  */
@@ -95,7 +95,7 @@ export interface OnDestroy { ngOnDestroy(): void; }
  * {@example core/ts/metadata/lifecycle_hooks_spec.ts region='AfterContentInit'}
  *
  * @description
- * See {@linkDocs guide/lifecycle-hooks#aftercontent "Lifecycle Hooks Guide"}.
+ * See
  *
  * @stable
  */
@@ -107,7 +107,7 @@ export interface AfterContentInit { ngAfterContentInit(): void; }
  * {@example core/ts/metadata/lifecycle_hooks_spec.ts region='AfterContentChecked'}
  *
  * @description
- * See {@linkDocs guide/lifecycle-hooks#aftercontent "Lifecycle Hooks Guide"}.
+ * See
  *
  * @stable
  */
@@ -120,7 +120,7 @@ export interface AfterContentChecked { ngAfterContentChecked(): void; }
  * {@example core/ts/metadata/lifecycle_hooks_spec.ts region='AfterViewInit'}
  *
  * @description
- * See {@linkDocs guide/lifecycle-hooks#afterview "Lifecycle Hooks Guide"}.
+ * See
  *
  * @stable
  */
@@ -132,7 +132,7 @@ export interface AfterViewInit { ngAfterViewInit(): void; }
  * {@example core/ts/metadata/lifecycle_hooks_spec.ts region='AfterViewChecked'}
  *
  * @description
- * See {@linkDocs guide/lifecycle-hooks#afterview "Lifecycle Hooks Guide"}.
+ * See
  *
  * @stable
  */

@@ -16,7 +16,6 @@ import {Type} from '../type';
  * ```
  *
  * @description
- * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
  *
  * ### Example
  *
@@ -57,7 +56,6 @@ export interface ValueProvider {
  * ```
  *
  * @description
- * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
  *
  * ### Example
  *
@@ -109,7 +107,6 @@ export interface StaticClassProvider {
  * ```
  *
  * @description
- * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
  *
  * ### Example
  *
@@ -148,7 +145,6 @@ export interface ConstructorProvider {
  * ```
  *
  * @description
- * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
  *
  * ### Example
  *
@@ -188,8 +184,7 @@ export interface ExistingProvider {
  * const provider: FactoryProvider = {provide: 'someToken', useFactory: serviceFactory, deps: []};
  * ```
  *
- * @description
- * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
+ *
  *
  * ### Example
  *
@@ -235,8 +230,6 @@ export interface FactoryProvider {
  * @howToUse
  * See {@link ValueProvider}, {@link ExistingProvider}, {@link FactoryProvider}.
  *
- * @description
- * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
  *
  * @stable
  */
@@ -260,7 +253,6 @@ export type StaticProvider = ValueProvider | ExistingProvider | StaticClassProvi
  * Create an instance by invoking the `new` operator and supplying additional arguments.
  * This form is a short form of `TypeProvider`;
  *
- * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
  *
  * ### Example
  *
@@ -280,8 +272,6 @@ export interface TypeProvider extends Type<any> {}
  * const provider: ClassProvider = {provide: 'someToken', useClass: MyService};
  * ```
  *
- * @description
- * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
  *
  * ### Example
  *
@@ -319,8 +309,6 @@ export interface ClassProvider {
  * @howToUse
  * See {@link TypeProvider}, {@link ClassProvider}, {@link StaticProvider}.
  *
- * @description
- * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
  *
  * @stable
  */

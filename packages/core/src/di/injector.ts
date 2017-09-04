@@ -34,8 +34,6 @@ class _NullInjector implements Injector {
  * injector.get(...);
  * ```
  *
- * @description
- * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
  *
  * ### Example
  *

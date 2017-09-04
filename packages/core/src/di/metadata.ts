@@ -25,8 +25,6 @@ export interface InjectDecorator {
    * }
    * ```
    *
-   * @description
-   * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
    *
    * ### Example
    *
@@ -78,8 +76,6 @@ export interface OptionalDecorator {
    * }
    * ```
    *
-   * @description
-   * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
    *
    * ### Example
    *
@@ -120,8 +116,6 @@ export interface InjectableDecorator {
    * class Car {}
    * ```
    *
-   * @description
-   * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
    *
    * ### Example
    *
@@ -169,8 +163,6 @@ export interface SelfDecorator {
    * }
    * ```
    *
-   * @description
-   * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
    *
    * ### Example
    *
@@ -214,8 +206,6 @@ export interface SkipSelfDecorator {
    * }
    * ```
    *
-   * @description
-   * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
    *
    * ### Example
    *
@@ -259,8 +249,6 @@ export interface HostDecorator {
    * }
    * ```
    *
-   * @description
-   * For more details, see the {@linkDocs guide/dependency-injection "Dependency Injection Guide"}.
    *
    * ### Example
    *
