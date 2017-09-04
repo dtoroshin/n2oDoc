@@ -55,8 +55,8 @@
       ]
     },
     {
-      "url": "guide/test",
-      "title": "test",
+      "url": "guide/streamStatus",
+      "title": "Статус потока",
       "tooltip": "fffff"
     }
   ],
