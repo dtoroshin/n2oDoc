@@ -15,13 +15,8 @@
     {
       "url": "events",
       "title": "Events"
-    },
-    {
-      "url": "https://blog.angular.io/",
-      "title": "Blog"
     }
   ],
-
   "TopBarNarrow": [
     {
       "title": "About Angular",
@@ -37,15 +32,10 @@
         {
           "url": "events",
           "title": "Events"
-        },
-        {
-          "url": "https://blog.angular.io/",
-          "title": "Blog"
         }
       ]
     }
   ],
-
   "SideNav": [
     {
       "title": "Fundamentals",
@@ -59,106 +49,17 @@
               "url": "guide/reactive-forms",
               "title": "Reactive Forms",
               "tooltip": "Create a reactive form using FormBuilder, groups, and arrays."
-            } ]
-        }
-    ]}
-  ],
-
-  "Footer": [
-    {
-      "title": "Resources",
-      "children": [
-        {
-          "url": "about",
-          "title": "About",
-          "tooltip": "Angular contributors."
-        },
-        {
-          "url": "resources",
-          "title": "Resource Listing",
-          "tooltip": "Angular tools, training, and blogs from around the web."
-        },
-        {
-          "url": "presskit",
-          "title": "Press Kit",
-          "tooltip": "Press contacts, logos, and branding."
-        },
-        {
-          "url": "https://blog.angular.io/",
-          "title": "Blog",
-          "tooltip": "Angular Blog"
+            }
+          ]
         }
       ]
     },
     {
-      "title": "Help",
-      "children": [
-        {
-          "url": "http://stackoverflow.com/questions/tagged/angular2",
-          "title": "Stack Overflow",
-          "tooltip": "Stack Overflow: where the community answers your technical Angular questions."
-        },
-        {
-          "url": "https://gitter.im/angular/angular",
-          "title": "Gitter",
-          "tooltip": "Chat about Angular with other birds of a feather."
-        },
-        {
-          "url": "https://github.com/angular/angular/issues",
-          "title": "Report Issues",
-          "tooltip": "Post issues and suggestions on github."
-        },
-        {
-          "url": "https://github.com/angular/code-of-conduct/blob/master/CODE_OF_CONDUCT.md",
-          "title": "Code of Conduct",
-          "tooltip": "Treating each other with respect."
-        }
-      ]
-    },
-    {
-      "title": "Community",
-      "children": [
-        {
-          "url": "events",
-          "title": "Events",
-          "tooltip": "Post issues and suggestions on github."
-        },
-        {
-          "url": "http://www.meetup.com/topics/angularjs/",
-          "title": "Meetups",
-          "tooltip": "Attend a meetup and learn from fellow developers."
-        },
-        {
-          "url": "https://twitter.com/angular",
-          "title": "Twitter",
-          "tooltip": "Twitter"
-        },
-        {
-          "url": "https://github.com/angular/angular",
-          "title": "GitHub",
-          "tooltip": "GitHub"
-        },
-        {
-          "url": "contribute",
-          "title": "Contribute",
-          "tooltip": "Contribute to Angular"
-        }
-      ]
-    },
-    {
-      "title": "Languages",
-      "children": [
-        {
-          "title": "中文版",
-          "url": "https://angular.cn/"
-        }
-      ]
+      "url": "guide/test",
+      "title": "test",
+      "tooltip": "fffff"
     }
   ],
-
-  "docVersions": [
-    { "title": "v2", "url": "https://v2.angular.io" },
-    { "title": "AngularDart", "url": "https://webdev.dartlang.org/angular" }
-
+  "Footer": [
   ]
 }
